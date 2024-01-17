@@ -44,7 +44,7 @@ function traverse(nodes: TmplAstNode[], config: ExtractorConfig) {
 function isTranslocoPipe(ast: any) {
   const isPipeChaining = isBindingPipe(ast.exp);
   const isTransloco =
-    ast.name === 'transloco' &&
+    ast.name === 'translate' &&
     (isPipeChaining ||
       isLiteralExpression(ast.exp) ||
       isConditionalExpression(ast.exp));
