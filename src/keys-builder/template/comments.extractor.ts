@@ -26,7 +26,7 @@ export function templateCommentsExtractor({
   const { containers, hasStructural } = getNgTemplateContainers(content);
   if (containers.length > 0) {
     const fileTemplate = hasStructural
-      ? content.replace(/\*transloco/g, '__transloco')
+      ? content.replace(/\*translate/g, '__translate')
       : content;
     const $ = loadCheerio(fileTemplate);
 
@@ -59,12 +59,12 @@ export function templateCommentsExtractor({
 }
 
 function getNgTemplateContainers(content: string) {
-  const hasNgTemplate = content.match(/<ng-template[^>]*transloco[^>]*>/);
-  const hasStructural = content.includes('*transloco');
+  const hasNgTemplate = content.match(/<ng-template[^>]*translate[^>]*>/);
+  const hasStructural = content.includes('*translate');
 
   const containers: string[] = [];
-  if (hasNgTemplate) containers.push('ng-template[transloco]');
-  if (hasStructural) containers.push('[__transloco]');
+  if (hasNgTemplate) containers.push('ng-template[translate]');
+  if (hasStructural) containers.push('[__translate]');
 
   return {
     containers,
@@ -119,7 +119,7 @@ function extractReadValue(
   let read: string;
 
   if (templateType === TEMPLATE_TYPE.STRUCTURAL) {
-    const data = element.attribs.__transloco;
+    const data = element.attribs.__translate;
     const readSearch = data.match(/read:\s*(['"])(?<read>[^"']*)\1/);
     read = readSearch?.groups.read;
   }
@@ -127,7 +127,7 @@ function extractReadValue(
   if (templateType === TEMPLATE_TYPE.NG_TEMPLATE) {
     const attrs = Object.keys(element.attribs);
     const readSearch = attrs.find((attr) =>
-      ['translocoread', '[translocoread]'].includes(attr)
+      ['translateread', '[translateread]'].includes(attr)
     );
     read = readSearch && element.attribs[readSearch].replace(/['"]/g, '');
   }
